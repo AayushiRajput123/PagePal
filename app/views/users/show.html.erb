@@ -1,0 +1,26 @@
+<h1 class="text-3xl font-bold mb-6 text-gray-800">Profile of <%= @user.email %></h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-4 text-gray-700">Statistics</h2>
+    <p class="text-lg text-gray-600">Total Books Recommended: <span class="font-bold"><%= @recommended_books.count %></span></p>
+    <p class="text-lg text-gray-600">Total Votes Received: <span class="font-bold"><%= @total_votes_received %></span></p>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-4 text-gray-700">Recent Activity</h2>
+    <p class="text-gray-600">More activity coming soon!</p>
+  </div>
+</div>
+
+<h2 class="text-2xl font-bold mb-4 text-gray-800">Books Recommended by <%= @user.email %></h2>
+
+<% if @recommended_books.any? %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @recommended_books.each do |recommendation| %>
+      <%= render 'recommendations/recommendation', recommendation: recommendation %>
+    <% end %>
+  </div>
+<% else %>
+  <p class="text-gray-600">This user hasn't recommended any books yet.</p>
+<% end %>
