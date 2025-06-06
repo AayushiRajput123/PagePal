@@ -3,43 +3,55 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
   database: pagepal_development
-  username: dell # <-- Replace 'dell' with your Ubuntu username if it's different
+  username: dell # <-- Confirm your Ubuntu username
+  # password:
 
 test:
   <<: *default
   database: pagepal_test
-  username: dell # <-- Replace 'dell' with your Ubuntu username if it's different
+  username: dell # <-- Confirm your Ubuntu username
+  # password:
 
 production:
+  # Main production database configuration for your application
+  # We will rely solely on DATABASE_URL for this main connection
   <<: *default
-  database: pagepal_production
-  username: <%= ENV["RAILS_DB_USERNAME"] %>
-  password: <%= ENV["RAILS_DB_PASSWORD"] %>
-  host: <%= ENV["RAILS_DB_HOST"] %>
-  port: <%= ENV["RAILS_DB_PORT"] %>
-  # The `url` key is often used by deployment platforms like Render/Fly.io
-  # that provide a full DATABASE_URL environment variable.
   url: <%= ENV["DATABASE_URL"] %>
 
-  # Add explicit configurations for cable, cache, and queue to point to the primary production database
-  # This resolves the "AdapterNotSpecified" errors for these components.
+  # Explicit configurations for cable, cache, and queue
+  # We'll parse DATABASE_URL to provide all individual connection parameters
+  # This makes it robust for ActiveRecord's `connects_to` feature.
   cable:
-    <<: *default
-    url: <%= ENV["DATABASE_URL"] %>
-    # Ensure your Action Cable config (config/cable.yml) uses the :postgresql adapter with this 'cable' key
+    adapter: postgresql
+    encoding: unicode
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    database: <%= URI.parse(ENV["DATABASE_URL"]).path[1..-1] %>
+    username: <%= URI.parse(ENV["DATABASE_URL"]).user %>
+    password: <%= URI.parse(ENV["DATABASE_URL"]).password %>
+    host: <%= URI.parse(ENV["DATABASE_URL"]).host %>
+    port: <%= URI.parse(ENV["DATABASE_URL"]).port || 5432 %>
 
   cache:
-    <<: *default
-    url: <%= ENV["DATABASE_URL"] %>
-    # Ensure your Solid Cache config (config/initializers/solid_cache.rb) uses this 'cache' key
+    adapter: postgresql
+    encoding: unicode
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    database: <%= URI.parse(ENV["DATABASE_URL"]).path[1..-1] %>
+    username: <%= URI.parse(ENV["DATABASE_URL"]).user %>
+    password: <%= URI.parse(ENV["DATABASE_URL"]).password %>
+    host: <%= URI.parse(ENV["DATABASE_URL"]).host %>
+    port: <%= URI.parse(ENV["DATABASE_URL"]).port || 5432 %>
 
   queue:
-    <<: *default
-    url: <%= ENV["DATABASE_URL"] %>
+    adapter: postgresql
+    encoding: unicode
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    database: <%= URI.parse(ENV["DATABASE_URL"]).path[1..-1] %>
+    username: <%= URI.parse(ENV["DATABASE_URL"]).user %>
+    password: <%= URI.parse(ENV["DATABASE_URL"]).password %>
+    host: <%= URI.parse(ENV["DATABASE_URL"]).host %>
+    port: <%= URI.parse(ENV["DATABASE_URL"]).port || 5432 %>
