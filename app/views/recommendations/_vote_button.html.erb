@@ -1,0 +1,12 @@
+<div id="vote_area_<%= recommendation.id %>">
+  <% if current_user.present? && !current_user.votes.exists?(recommendation: recommendation) %>
+    <%= form_with model: [recommendation, Vote.new], data: { turbo_frame: "vote_area_#{recommendation.id}" } do |f| %>
+      <%= f.submit "Upvote" %>
+    <% end %>
+  <% else %>
+    <% if user_signed_in? %>
+      <span>Voted!</span>
+    <% end %>
+  <% end %>
+  <span id="recommendation_<%= recommendation.id %>_vote_count"><%= recommendation.total_votes %></span>
+</div>

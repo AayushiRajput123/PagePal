@@ -1,0 +1,2 @@
+<%= turbo_stream.replace "vote_area_#{@recommendation.id}", partial: "recommendations/vote_button", locals: { recommendation: @recommendation } %>
+<%= turbo_stream.update "recommendation_#{@recommendation.id}_vote_count", @recommendation.total_votes %>

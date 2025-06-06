@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root to: 'recommendations#index'
 
   resources :recommendations do
-    resources :votes, only: [:create]
+     resources :votes, only: [:create]
   end
 
   # User Profile
