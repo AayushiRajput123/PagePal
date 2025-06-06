@@ -26,4 +26,20 @@ production:
   port: <%= ENV["RAILS_DB_PORT"] %>
   # The `url` key is often used by deployment platforms like Render/Fly.io
   # that provide a full DATABASE_URL environment variable.
-  # url: <%= ENV["DATABASE_URL"] %>
+  url: <%= ENV["DATABASE_URL"] %>
+
+  # Add explicit configurations for cable, cache, and queue to point to the primary production database
+  # This resolves the "AdapterNotSpecified" errors for these components.
+  cable:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
+    # Ensure your Action Cable config (config/cable.yml) uses the :postgresql adapter with this 'cable' key
+
+  cache:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
+    # Ensure your Solid Cache config (config/initializers/solid_cache.rb) uses this 'cache' key
+
+  queue:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
