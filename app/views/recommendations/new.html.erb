@@ -1,0 +1,48 @@
+<h1 class="text-2xl font-bold mb-6">Add New Book Recommendation</h1>
+<% byebug %>
+<%= form_with model: @recommendation, url: recommendations_path, class: "space-y-4" do |form| %>
+  <% if @recommendation.errors.any? %>
+    <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <h2 class="font-bold">Error:</h2>
+      <ul>
+        <% @recommendation.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.fields_for :book, @book do |book_fields| %>
+    <div>
+      <%= book_fields.label :title, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= book_fields.text_field :title, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+    </div>
+    <div>
+      <%= book_fields.label :author, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= book_fields.text_field :author, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+    </div>
+    <div>
+      <%= book_fields.label :image_url, "Image URL", class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= book_fields.text_field :image_url, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :review, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= form.text_area :review, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32", maxlength: 250 %>
+    <p class="text-xs text-gray-500 text-right"><span id="review_char_count">0</span>/250 words</p>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <%= form.submit "Create Recommendation", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+  </div>
+<% end %>
+
+<script>
+  const reviewTextArea = document.getElementById('recommendation_review');
+  const charCountSpan = document.getElementById('review_char_count');
+
+  reviewTextArea.addEventListener('input', () => {
+    charCountSpan.textContent = reviewTextArea.value.length;
+  });
+</script>

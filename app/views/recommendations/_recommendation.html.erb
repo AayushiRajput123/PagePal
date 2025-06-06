@@ -1,0 +1,28 @@
+<div id="<%= dom_id(recommendation) %>">
+  <div>
+    <% if recommendation.book.image_url.present? %>
+      <p>
+        <%= image_tag recommendation.book.image_url, alt: "#{recommendation.book.title} book cover" %>
+      </p>
+    <% end %>
+    <div>
+      <h3><%= recommendation.book.title %></h3>
+      <p>by <%= recommendation.book.author %></p>
+    </div>
+  </div>
+
+  <p><%= truncate(recommendation.review, length: 150, separator: ' ') %></p>
+  <% if recommendation.review.length > 150 %>
+    <p><%= link_to "Read more", recommendation_path(recommendation) %></p>
+  <% end %>
+
+  <div>
+    <p>Recommended by <%= link_to recommendation.user.email, user_profile_path(recommendation.user) %></p>
+
+    <% if user_signed_in? %>
+      <%= render 'recommendations/vote_button', recommendation: recommendation %>
+    <% else %>
+      <p>Votes: <%= recommendation.total_votes %></p>
+    <% end %>
+  </div>
+</div>

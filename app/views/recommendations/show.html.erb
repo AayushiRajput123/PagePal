@@ -1,0 +1,39 @@
+<div>
+  <% if @recommendation.book.image_url.present? %>
+    <p>
+      <%= image_tag @recommendation.book.image_url, alt: "Book Cover" %>
+    </p>
+  <% end %>
+
+  <h1>
+    <%= @recommendation.book.title %>
+  </h1>
+  <h2>
+    by <%= @recommendation.book.author %>
+  </h2>
+
+  <div>
+    <h3>Review:</h3>
+    <p><%= @recommendation.review %></p>
+  </div>
+
+  <div>
+    <p>
+      Recommended by <%= link_to @recommendation.user.email, user_profile_path(@recommendation.user) %>
+      on <%= @recommendation.created_at.strftime("%B %d, %Y") %>
+    </p>
+
+    <% if user_signed_in? %>
+      <%= render 'recommendations/vote_button', recommendation: @recommendation %>
+    <% else %>
+      <div>
+        <span>Votes: <%= @recommendation.total_votes %></span>
+        <p>(<%= link_to "Sign in", new_user_session_path %> to vote)</p>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= link_to "← Back to all recommendations", recommendations_path %>
+  </div>
+</div>
