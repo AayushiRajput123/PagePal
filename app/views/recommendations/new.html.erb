@@ -1,4 +1,5 @@
 <h1 class="text-2xl font-bold mb-6">Add New Book Recommendation</h1>
+
 <%= form_with model: @recommendation, url: recommendations_path, class: "space-y-4" do |form| %>
   <% if @recommendation.errors.any? %>
     <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -38,6 +39,7 @@
 <% end %>
 
 <script>
+  // Simple character counter for review (you can enhance this for words)
   const reviewTextArea = document.getElementById('recommendation_review');
   const charCountSpan = document.getElementById('review_char_count');
 
