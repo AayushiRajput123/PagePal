@@ -18,40 +18,18 @@ test:
   # password:
 
 production:
-  # Main production database configuration for your application
-  # We will rely solely on DATABASE_URL for this main connection
-  <<: *default
-  url: <%= ENV["DATABASE_URL"] %>
+  primary:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
 
-  # Explicit configurations for cable, cache, and queue
-  # We'll parse DATABASE_URL to provide all individual connection parameters
-  # This makes it robust for ActiveRecord's `connects_to` feature.
   cable:
-    adapter: postgresql
-    encoding: unicode
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    database: <%= URI.parse(ENV["DATABASE_URL"]).path[1..-1] %>
-    username: <%= URI.parse(ENV["DATABASE_URL"]).user %>
-    password: <%= URI.parse(ENV["DATABASE_URL"]).password %>
-    host: <%= URI.parse(ENV["DATABASE_URL"]).host %>
-    port: <%= URI.parse(ENV["DATABASE_URL"]).port || 5432 %>
-
-  cache:
-    adapter: postgresql
-    encoding: unicode
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    database: <%= URI.parse(ENV["DATABASE_URL"]).path[1..-1] %>
-    username: <%= URI.parse(ENV["DATABASE_URL"]).user %>
-    password: <%= URI.parse(ENV["DATABASE_URL"]).password %>
-    host: <%= URI.parse(ENV["DATABASE_URL"]).host %>
-    port: <%= URI.parse(ENV["DATABASE_URL"]).port || 5432 %>
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
 
   queue:
-    adapter: postgresql
-    encoding: unicode
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    database: <%= URI.parse(ENV["DATABASE_URL"]).path[1..-1] %>
-    username: <%= URI.parse(ENV["DATABASE_URL"]).user %>
-    password: <%= URI.parse(ENV["DATABASE_URL"]).password %>
-    host: <%= URI.parse(ENV["DATABASE_URL"]).host %>
-    port: <%= URI.parse(ENV["DATABASE_URL"]).port || 5432 %>
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
+
+  cache:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
